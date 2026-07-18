@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { Command } from "commander";
-import { addExpense } from "./src/expenses.js";
+import { addExpense, listExpenses } from "./src/expenses.js";
 
 const program = new Command();
 
@@ -22,5 +22,7 @@ program
       process.exit(1);
     }
   });
+
+program.command("list").action(listExpenses);
 
 program.parse();
