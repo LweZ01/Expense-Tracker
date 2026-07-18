@@ -1,0 +1,28 @@
+{
+  "name": "expense-tracker",
+  "version": "1.0.0",
+  "description": "https://roadmap.sh/projects/expense-tracker",
+  "main": "index.js",
+  "bin": {
+    "expense-tracker": "./index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LweZ01/Expense-Tracker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/LweZ01/Expense-Tracker/issues"
+  },
+  "homepage": "https://github.com/LweZ01/Expense-Tracker#readme",
+  "dependencies": {
+    "commander": "15.0.0"
+  }
+}
