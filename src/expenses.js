@@ -23,4 +23,31 @@ const addExpense = async (description, amount) => {
   return newExpense;
 };
 
-export { addExpense };
+const listExpenses = async () => {
+  const expenses = await readExpenses();
+  if (expenses.length <= 0) {
+    console.log("No expenses found");
+    return;
+  }
+
+  console.log(
+    `${"ID".padEnd(6)}` +
+      `${"Date".padEnd(12)}` +
+      `${"Description".padEnd(25)}` +
+      `${"Amount".padStart(10)}`,
+  );
+
+  console.log("-".repeat(53));
+  expenses.forEach((exp) => {
+    const formattedAmount = `$${Number(exp.amount).toFixed(2)}`;
+
+    console.log(
+      `${String(exp.id).padEnd(6)}` +
+        `${String(exp.date).padEnd(12)}` +
+        `${String(exp.description).padEnd(25)}` +
+        `${formattedAmount.padStart(10)}`,
+    );
+  });
+};
+
+export { addExpense, listExpenses };
