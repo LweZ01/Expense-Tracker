@@ -50,4 +50,19 @@ const listExpenses = async () => {
   });
 };
 
-export { addExpense, listExpenses };
+const deleteExpense = async (id) => {
+  const numericId = Number(id);
+  const expenses = await readExpenses();
+  const expenseExists = expenses.some((expense) => expense.id === numericId);
+
+  if (!expenseExists) {
+    throw new Error("Id didnt exists");
+  }
+
+  const updatedExpenses = expenses.filter(
+    (expense) => expense.id !== numericId,
+  );
+  await writeExpenses(updatedExpenses);
+};
+
+export { addExpense, listExpenses, deleteExpense };
