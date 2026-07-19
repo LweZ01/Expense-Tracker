@@ -1,6 +1,11 @@
 #!/usr/bin/env node
 import { Command } from "commander";
-import { addExpense, listExpenses, deleteExpense } from "./src/expenses.js";
+import {
+  addExpense,
+  listExpenses,
+  deleteExpense,
+  updateExpense,
+} from "./src/expenses.js";
 
 const program = new Command();
 
@@ -30,8 +35,23 @@ program
   .requiredOption("--id <id>", "Expense id")
   .action(async (options) => {
     try {
-      const resultado = await deleteExpense(options.id);
+      await deleteExpense(options.id);
       console.log(`Expense deleted successfully`);
+    } catch (error) {
+      console.error(`Error: ${error.message}`);
+      process.exit(1);
+    }
+  });
+
+program
+  .command("update")
+  .requiredOption("--id <id>", "Expense id")
+  .option("--description <description>", "New expense description")
+  .option("--amount <amount>", "New expense amount")
+  .action(async (options) => {
+    try {
+      await updateExpense(options.id, options.description, options.amount);
+      console.log(`Expense updated successfully`);
     } catch (error) {
       console.error(`Error: ${error.message}`);
       process.exit(1);

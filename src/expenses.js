@@ -65,4 +65,59 @@ const deleteExpense = async (id) => {
   await writeExpenses(updatedExpenses);
 };
 
-export { addExpense, listExpenses, deleteExpense };
+const updateExpense = async (id, description, amount) => {
+  const numericId = Number(id);
+  const expenses = await readExpenses();
+  const expense = expenses.find((e) => e.id === numericId);
+  const NumericAmount = Number(amount);
+  if (!expense) {
+    throw new Error("Expense id didnt exists");
+  }
+  if (description === undefined && amount === undefined) {
+    throw new Error("Both values are empty");
+  }
+  if (description !== undefined) {
+    if (description.length <= 0) {
+      throw new Error("description its empty");
+    }
+    expense.description = description;
+  }
+
+  if (amount !== undefined) {
+    if (NumericAmount < 0) {
+      throw new Error("Must be a positive number");
+    }
+    expense.amount = NumericAmount;
+  }
+
+  await writeExpenses(expenses);
+};
+
+const getSummary = async (month) => {
+  const expenses = await readExpenses();
+
+  if (month === undefined) {
+    const total = expenses.reduce((sum, e) => sum + e.amount, 0);
+    return { total, month: undefined };
+  }
+
+  const numericMonth = Number(month);
+  if (isNaN(numericMonth) || numericMonth < 1 || numericMonth > 12) {
+    throw new Error("Month must be a number between 1 and 12");
+  }
+
+  const currentYear = new Date().getFullYear();
+
+  const filtered = expenses.filter((e) => {
+    const [year, expenseMonth] = e.date.split("-");
+    return (
+      Number(year) === currentYear && Number(expenseMonth) === numericMonth
+    );
+  });
+
+  const total = filtered.reduce((sum, e) => sum + e.amount, 0);
+
+  return { total, month: numericMonth };
+};
+
+export { addExpense, listExpenses, deleteExpense, updateExpense, getSummary };
