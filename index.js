@@ -5,6 +5,7 @@ import {
   listExpenses,
   deleteExpense,
   updateExpense,
+  getSummary,
 } from "./src/expenses.js";
 
 const program = new Command();
@@ -52,6 +53,38 @@ program
     try {
       await updateExpense(options.id, options.description, options.amount);
       console.log(`Expense updated successfully`);
+    } catch (error) {
+      console.error(`Error: ${error.message}`);
+      process.exit(1);
+    }
+  });
+
+program
+  .command("summary")
+  .option("--month <month>", "Add a month to show")
+  .action(async (options) => {
+    try {
+      const { total, month } = await getSummary(options.month);
+
+      if (month === undefined) {
+        console.log(`Total expenses: $${total}`);
+      } else {
+        const monthNames = [
+          "January",
+          "February",
+          "March",
+          "April",
+          "May",
+          "June",
+          "July",
+          "August",
+          "September",
+          "October",
+          "November",
+          "December",
+        ];
+        console.log(`Total expenses for ${monthNames[month - 1]}: $${total}`);
+      }
     } catch (error) {
       console.error(`Error: ${error.message}`);
       process.exit(1);
